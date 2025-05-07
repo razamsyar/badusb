@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Compromised</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #ff0000;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glitch {
+            font-size: 5em;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0.05em 0 0 #ff0000, -0.025em -0.05em 0 #000,
+                         0.025em 0.05em 0 #ff0000;
+            animation: glitch 500ms infinite;
+        }
+
+        .matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hacker-text {
+            font-size: 1.5em;
+            margin-top: 20px;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(255, 0, 0, 0.1) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            animation: scan 10s linear infinite;
+        }
+
+        @keyframes glitch {
+            0% {
+                text-shadow: 0.05em 0 0 #ff0000, -0.025em -0.05em 0 #000,
+                            0.025em 0.05em 0 #ff0000;
+            }
+            14% {
+                text-shadow: 0.05em 0 0 #ff0000, -0.025em -0.05em 0 #000,
+                            0.025em 0.05em 0 #ff0000;
+            }
+            15% {
+                text-shadow: -0.05em -0.025em 0 #ff0000, 0.025em 0.025em 0 #000,
+                            -0.05em -0.05em 0 #ff0000;
+            }
+            49% {
+                text-shadow: -0.05em -0.025em 0 #ff0000, 0.025em 0.025em 0 #000,
+                            -0.05em -0.05em 0 #ff0000;
+            }
+            50% {
+                text-shadow: 0.025em 0.05em 0 #ff0000, 0.05em 0 0 #000,
+                            0 -0.05em 0 #ff0000;
+            }
+            99% {
+                text-shadow: 0.025em 0.05em 0 #ff0000, 0.05em 0 0 #000,
+                            0 -0.05em 0 #ff0000;
+            }
+            100% {
+                text-shadow: -0.025em 0 0 #ff0000, -0.025em -0.025em 0 #000,
+                            -0.025em -0.05em 0 #ff0000;
+            }
+        }
+
+        @keyframes scan {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix" id="matrix"></canvas>
+    <div class="scan-line"></div>
+    <div class="container">
+        <div class="glitch">HACKED</div>
+        <div class="hacker-text">by PBM</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+        const charArray = chars.split('');
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#ff0000';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(draw, 33);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html> 
